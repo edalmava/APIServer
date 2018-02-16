@@ -50,14 +50,9 @@ class APIServer {
 	
 	private function verificarFormatHeaderAuth() {		
 		$cab_auth = explode(" ", $_SERVER["HTTP_AUTHORIZATION"], 2);
-		if (count($cab_auth) == 2) {
-			list($type, $token) = $cab_auth;
-			if (strcasecmp($type, "Bearer") == 0) {
-				$this->token = $token;
-				if ($this->validarToken()) return true;
-			} else {
-				throw new \Exception($this->errors['1']);							
-			}
+		if (count($cab_auth) == 2 && strcasecmp($cab_auth[0], "Bearer") == 0) {			
+			$this->token = $cab_auth[1];
+			if ($this->validarToken()) return true;			
 		} else {
 			throw new \Exception($this->errors['1']);			
 		}		
